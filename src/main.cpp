@@ -2,7 +2,6 @@
 #include <fstream>
 #include <iostream>
 #include <print>
-#include <vector>
 
 #include "encoder.hpp"
 
@@ -39,16 +38,14 @@ void print_help() {
 }
 
 int main(int argc, char** argv) {
-    std::vector<std::string> args(argv, argv + argc);
-
-    if (argc < 3 || args[1] == "-h" || args[1] == "--help") {
+    if (argc < 3 || argv[1] == "-h" || argv[1] == "--help") {
         print_help();
         return (argc < 3) ? 1 : 0;
     }
 
     bool is_path_stream = true;
-    std::string command = args[1];
-    std::string stream = args[2];
+    std::string command = argv[1];
+    std::string stream = argv[2];
     std::string output_path = "";
 
     if (command != "encode" && command != "decode") {
@@ -56,7 +53,6 @@ int main(int argc, char** argv) {
             std::cerr,
             "Ошибка: Неверная команда '{}'. Ожидается 'encode' или 'decode'.\n",
             command);
-        print_help();
         return 1;
     }
 
@@ -64,20 +60,18 @@ int main(int argc, char** argv) {
         is_path_stream = false;
     }
 
-    for (size_t i = 3; i < args.size(); ++i) {
-        if (args[i] == "-o") {
-            if (i + 1 < args.size()) {
-                output_path = args[i + 1];
+    for (size_t i = 3; i < argc; ++i) {
+        if (std::string(argv[i]) == "-o") {
+            if (i + 1 < argc) {
+                output_path = argv[i + 1];
                 i++;
             } else {
                 std::println(std::cerr,
                              "Ошибка: Для опции -o необходимо указать путь к файлу.\n");
-                print_help();
                 return 1;
             }
         } else {
-            std::println(std::cerr, "Ошибка: Неизвестный аргумент '{}'\n", args[i]);
-            print_help();
+            std::println(std::cerr, "Ошибка: Неизвестный аргумент '{}'\n", argv[i]);
             return 1;
         }
     }
