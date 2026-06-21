@@ -11,7 +11,7 @@ namespace encoder {
             if (i < input.length() && input[i] == input[i - 1]) {
                 count++;
             } else {
-                encoded += std::to_string(count) + input[i - 1];
+                encoded += input[i - 1] + std::to_string(count);
                 count = 1;
             }
         }
@@ -21,6 +21,7 @@ namespace encoder {
     std::string decode(const std::string& input) {
         if (input.empty()) return "";
     
+        char current_ch;
         std::string decoded = "";
         std::string count_str = "";
     
@@ -28,13 +29,22 @@ namespace encoder {
             if (std::isdigit(ch)) {
                 count_str += ch;
             } else {
-                if (!count_str.empty()) {
+                if (count_str.empty()) {
+                    current_ch = ch;
+                } else {
                     int count = std::stoi(count_str);
-                    decoded.append(count, ch);
+                    decoded.append(count, current_ch);
                     count_str = "";
+                    current_ch = ch;
                 }
             }
         }
+
+        if (!count_str.empty()) {
+            int count = std::stoi(count_str);
+            decoded.append(count, current_ch);
+        }
+
         return decoded;
     }
 }
