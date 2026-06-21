@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
     }
 
     bool is_path_stream = true;
-    
+
     std::string stream = argv[2];
     std::string output_path = "";
 
@@ -89,18 +89,23 @@ int main(int argc, char** argv) {
 
     std::string result;
 
-    if (command == "encode") {
-        result = encoder::encode(input);
-    } else if (command == "decode") {
-        result = encoder::decode(input);
-    }
+    try {
+        if (command == "encode") {
+            result = encoder::encode(input);
+        } else if (command == "decode") {
+            result = encoder::decode(input);
+        }
 
-    if (output_path != "") {
-        std::ofstream file(output_path);
-        file << result << "\n";
-    } else {
-        std::println("{}", result);
-    }
+        if (output_path != "") {
+            std::ofstream file(output_path);
+            file << result << "\n";
+        } else {
+            std::println("{}", result);
+        }
 
-    return 0;
+        return 0;
+    } catch (std::runtime_error& e) {
+        std::println(std::cerr, "Ошибка: Ввод содержит недоступные символы\n");
+        return 1;
+    }
 }

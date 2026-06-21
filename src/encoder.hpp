@@ -2,6 +2,7 @@
 #define ENCODER_HPP
 
 #include <string>
+#include <stdexcept>
 
 namespace encoder {
     std::string encode(const std::string& input);
