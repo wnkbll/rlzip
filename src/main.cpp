@@ -24,13 +24,13 @@ void print_help() {
         "Encoding).\n\n");
     std::print("Обязательные аргументы:\n");
     std::print(
-        "  <command>       Режим работы: 'encode' (кодировать) или 'decode' "
+        "  <command>        Режим работы: 'encode' (кодировать) или 'decode' "
         "(декодировать)\n");
     std::print(
         "  <stream>         Входная строка текста ИЛИ путь к входному файлу\n\n");
     std::print("Опциональные аргументы:\n");
     std::print(
-        "  -o <путь>       Путь к выходному файлу (если не указан, вывод производится "
+        "  -o <путь>        Путь к выходному файлу (если не указан, вывод производится "
         "в консоль)\n\n");
     std::print("Примеры:\n");
     std::print("  rlzip encode \"AAAAABBB\" -o output.txt\n");
@@ -38,13 +38,15 @@ void print_help() {
 }
 
 int main(int argc, char** argv) {
-    if (argc < 3 || argv[1] == "-h" || argv[1] == "--help") {
+    std::string command = argv[1];
+
+    if (argc < 3 || command == "-h" || command == "--help") {
         print_help();
-        return (argc < 3) ? 1 : 0;
+        return 0;
     }
 
     bool is_path_stream = true;
-    std::string command = argv[1];
+    
     std::string stream = argv[2];
     std::string output_path = "";
 
@@ -95,7 +97,7 @@ int main(int argc, char** argv) {
 
     if (output_path != "") {
         std::ofstream file(output_path);
-        file << result;
+        file << result << "\n";
     } else {
         std::println("{}", result);
     }
