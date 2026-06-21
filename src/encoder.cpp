@@ -5,10 +5,10 @@ bool is_valid_char(char ch) {
 }
 
 namespace encoder {
-std::string encode(const std::string& input) {
+String encode(const String& input) {
     if (input.empty()) return "";
 
-    std::string encoded = "";
+    String encoded = "";
     int count = 1;
 
     for (size_t i = 1; i <= input.length(); ++i) {
@@ -24,11 +24,11 @@ std::string encode(const std::string& input) {
     return encoded;
 }
 
-std::string decode(const std::string& input) {
+String decode(const String& input) {
     if (input.empty()) return "";
 
     char current_ch;
-    std::string decoded = "";
+    String decoded = "";
     std::string count_str = "";
 
     for (char ch : input) {

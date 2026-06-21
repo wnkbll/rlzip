@@ -1,12 +1,14 @@
 #ifndef ENCODER_HPP
 #define ENCODER_HPP
 
-#include <string>
 #include <stdexcept>
+#include <string>
+
+#include "string.hpp"
 
 namespace encoder {
-    std::string encode(const std::string& input);
-    std::string decode(const std::string& input);
-}
+String encode(const String& input);
+String decode(const String& input);
+}  // namespace encoder
 
 #endif

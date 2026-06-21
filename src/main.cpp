@@ -4,6 +4,7 @@
 #include <print>
 
 #include "encoder.hpp"
+#include "string.hpp"
 
 bool is_valid_path(const std::filesystem::path& path) {
     if (!std::filesystem::exists(path)) {
@@ -38,7 +39,7 @@ void print_help() {
 }
 
 int main(int argc, char** argv) {
-    std::string command = argv[1];
+    String command = argv[1];
 
     if (argc < 3 || command == "-h" || command == "--help") {
         print_help();
@@ -47,14 +48,14 @@ int main(int argc, char** argv) {
 
     bool is_path_stream = true;
 
-    std::string stream = argv[2];
-    std::string output_path = "";
+    String stream = argv[2];
+    String output_path = "";
 
     if (command != "encode" && command != "decode") {
         std::println(
             std::cerr,
             "Ошибка: Неверная команда '{}'. Ожидается 'encode' или 'decode'.\n",
-            command);
+            command.c_str());
         return 1;
     }
 
@@ -63,7 +64,7 @@ int main(int argc, char** argv) {
     }
 
     for (size_t i = 3; i < argc; ++i) {
-        if (std::string(argv[i]) == "-o") {
+        if (String(argv[i]) == "-o") {
             if (i + 1 < argc) {
                 output_path = argv[i + 1];
                 i++;
@@ -78,7 +79,7 @@ int main(int argc, char** argv) {
         }
     }
 
-    std::string input;
+    String input;
     if (is_path_stream) {
         std::ifstream file(stream);
         file >> input;
@@ -87,7 +88,7 @@ int main(int argc, char** argv) {
         input = stream;
     }
 
-    std::string result;
+    String result;
 
     try {
         if (command == "encode") {
@@ -100,7 +101,7 @@ int main(int argc, char** argv) {
             std::ofstream file(output_path);
             file << result << "\n";
         } else {
-            std::println("{}", result);
+            std::println("{}", result.c_str());
         }
 
         return 0;
