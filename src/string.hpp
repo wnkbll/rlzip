@@ -13,91 +13,49 @@ class String {
     size_t capacity;
 
    public:
-    String() : data(new char[1]{'\0'}), len(0), capacity(0) {}
+    String();
 
-    String(const char* s) {
-        len = std::strlen(s);
-        capacity = len;
-        data = new char[len + 1];
-        std::memcpy(data, s, len + 1);
-    }
+    String(const char* s);
 
-    ~String() { delete[] data; }
+    ~String();
 
-    String(size_t n, char c) {
-        len = n;
-        capacity = n;
-        data = new char[len + 1];
-        std::memset(data, c, len);
-        data[len] = '\0';
-    }
+    String(size_t n, char c);
 
-    String(const String& other) : len(other.len), capacity(other.len) {
-        data = new char[len + 1];
-        std::memcpy(data, other.data, len + 1);
-    }
+    String(const String& other);
 
-    char* begin() { return data; }
-    char* end() { return data + len; }
+    char* begin();
+    char* end();
 
-    const char* begin() const { return data; }
-    const char* end() const { return data + len; }
+    const char* begin() const;
+    const char* end() const;
 
-    operator std::string() const { return std::string(data); }
+    operator std::string() const;
 
-    operator std::filesystem::path() const { return std::filesystem::path(data); }
+    operator std::filesystem::path() const;
 
-    String& operator=(const String& other) {
-        if (this != &other) {
-            delete[] data;
-            len = other.len;
-            capacity = other.len;
-            data = new char[len + 1];
-            std::memcpy(data, other.data, len + 1);
-        }
-        return *this;
-    }
+    String& operator=(const String& other);
 
-    bool operator==(const char* other) { return std::strcmp(data, other) == 0; }
+    bool operator==(const char* other);
 
-    bool operator!=(const char* other) { return std::strcmp(data, other) != 0; }
+    bool operator!=(const char* other);
 
-    size_t length() const { return len; }
+    String operator+(const std::string& s);
 
-    bool empty() const { return len == 0; }
+    String& operator+=(const std::string& s);
 
-    char& operator[](size_t i) { return data[i]; }
+    char& operator[](size_t i);
 
-    const char& operator[](size_t i) const { return data[i]; }
+    const char& operator[](size_t i) const;
 
-    void push_back(char c) {
-        if (len + 1 > capacity) {
-            capacity = (capacity == 0) ? 16 : capacity * 2;
-            char* newData = new char[capacity + 1];
-            std::memcpy(newData, data, len);
-            delete[] data;
-            data = newData;
-        }
-        data[len++] = c;
-        data[len] = '\0';
-    }
+    size_t length() const;
 
-    void append(size_t count, char c) {
-        for (size_t i = 0; i < count; ++i) push_back(c);
-    }
+    bool empty() const;
 
-    String operator+(const std::string& s) {
-        String result = *this;
-        for (char c : s) result.push_back(c);
-        return result;
-    }
+    void push_back(char c);
 
-    String& operator+=(const std::string& s) {
-        for (char c : s) push_back(c);
-        return *this;
-    }
+    void append(size_t count, char c);
 
-    const char* c_str() const { return data; }
+    const char* c_str() const;
 };
 
 inline std::istream& operator>>(std::istream& is, String& str) {
